@@ -16,7 +16,9 @@ def main (page: ft.Page):
         page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
     def handle_change(e):
-        page.add(ft.Text(f"Date changed: {e.control.value.strftime('%m/%d/%Y')}"))
+        page.add(ft.Text(f"Date changed: {e.control.value.strftime('%Y/%m/%d')}"))
+        today = datetime.date.today()
+        
 
     def handle_dismissal(e):
         page.add(ft.Text(f"DatePicker dismissed"))
@@ -42,13 +44,12 @@ def main (page: ft.Page):
         )
 
     date_picker = ft.DatePicker(
-        first_date=datetime.datetime(year=2025, month=1, day=1),
+        first_date=datetime.datetime.now(), 
         last_date=datetime.datetime(year=2050, month=1, day=1),
         on_change=handle_change,
         on_dismiss=handle_dismissal,
-        )
+    )
 
-        
     page.add(ft.ElevatedButton(
          "Pick date",
         icon=ft.Icons.CALENDAR_MONTH,

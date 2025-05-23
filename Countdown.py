@@ -11,10 +11,6 @@ def main (page: ft.Page):
     page.title = "Countdown App"
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
-    def main (page: ft.Page):
-        page.title = "Countdown App"
-        page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-
     def handle_change(e):
         page.add(ft.Text(f"Date changed: {e.control.value.strftime('%Y/%m/%d')}"))
         today = datetime.date.today()

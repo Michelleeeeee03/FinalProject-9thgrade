@@ -10,7 +10,6 @@
 # https://docs.python.org/3/library/threading.html
 
 import flet as ft
-import flet_timer as ftt
 import time
 import datetime
 import threading
@@ -21,7 +20,8 @@ def main (page: ft.Page):
 
     selected_date = None
     selected_time = None 
-    event_title = "My Awesome Event"
+    
+    event_title_text_value = "My Awesome Event"
 
     # Text to display the countdown
     countdown_display_text = ft.Text(
@@ -47,7 +47,7 @@ def main (page: ft.Page):
     def handle_change_d(e):
         nonlocal selected_date
         selected_date = e.control.value
-        selected_date_display.value = f"Selected Date: {selected_date.strftime('%Y-%m-%d')}" # Update display
+        selected_date_display.value = f"Selected Date: {selected_date.strftime('%Y-%m-%d')}"
         page.update(selected_date_display) 
         update_countdown_display()
         
@@ -57,7 +57,7 @@ def main (page: ft.Page):
     def handle_change_t(e):
         nonlocal selected_time
         selected_time = e.control.value
-        selected_time_display.value = f"Selected time: {selected_time.strftime('%H:%M:%S')}" # Update display
+        selected_time_display.value = f"Selected time: {selected_time.strftime('%H:%M:%S')}"
         page.update(selected_time_display) 
         update_countdown_display()
 
@@ -65,20 +65,22 @@ def main (page: ft.Page):
         pass
 
     def event_title_changed(e):
-        nonlocal event_title
-        event_title = e.control.value
+        nonlocal event_title_text_value 
+        event_title_text_value = e.control.value
+        event_title_field.value = event_title_text_value 
+        page.update(event_title_field) 
+
         update_countdown_display()
-        page.update(event_title) # Update the text field if its value changed internally
 
     def update_countdown_display():
-        # Updates the countdown text based on selected date/time and event title.
-        # Only proceed if both date and time are selected
+        current_event_title = event_title_text_value if event_title_text_value.strip() else "My Awesome Event"
+
         if selected_date and selected_time:
             combined_datetime = datetime.datetime.combine(selected_date, selected_time)
             time_difference = combined_datetime - datetime.datetime.now()
 
             if time_difference.total_seconds() <= 0:
-                countdown_display_text.value = f"{event_title} has already passed!"
+                countdown_display_text.value = f"{current_event_title} has already passed!"
             else:
                 days = time_difference.days
                 remaining_seconds_in_day = time_difference.seconds 
@@ -88,16 +90,16 @@ def main (page: ft.Page):
                 seconds = remaining_seconds_in_day % 60
                 
                 countdown_display_text.value = (
-                    f"{event_title} in:\n"
+                    f"{current_event_title} in:\n"
                     f"{days}d : {hours:02}h : {minutes:02}m : {seconds:02}s")
         else:
             # If date or time is missing, display the initial instruction
             countdown_display_text.value = "Please select a date and time to start the countdown."
         
-        page.update(countdown_display_text) # Only update the countdown text for efficiency
+        page.update(countdown_display_text)
 
     def start_realtime_countdown():
-        """Starts a background thread to update the countdown every second."""
+        # Starts a background thread to update the countdown every second.
         while True:
             update_countdown_display()
             time.sleep(1)
@@ -117,9 +119,9 @@ def main (page: ft.Page):
     on_change=handle_change_d,
     on_dismiss=handle_dismissal_d)
 
-    event_title = ft.TextField(
+    event_title_field = ft.TextField(
         label="Event Title",
-        value=event_title, 
+        value=event_title_text_value, 
         width=300,
         text_align=ft.TextAlign.CENTER,
         on_change=event_title_changed)
@@ -135,7 +137,7 @@ def main (page: ft.Page):
         on_click=lambda _: page.open(time_picker))
 
     page.add(
-        event_title,
+        event_title_field, 
         ft.Row([date_button, time_button],
         alignment=ft.MainAxisAlignment.CENTER),
         selected_date_display,

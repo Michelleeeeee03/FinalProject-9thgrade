@@ -8,6 +8,8 @@
 # https://docs.python.org/3/library/time.html
 # https://docs.python.org/3/library/datetime.html
 # https://docs.python.org/3/library/threading.html
+# https://flet.dev/docs/controls/banner
+# https://flet.dev/docs/cookbook/fonts
 
 import flet as ft
 import time

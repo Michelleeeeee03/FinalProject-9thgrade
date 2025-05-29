@@ -1,14 +1,3 @@
-# Credits:
-# https://flet.dev/docs/
-# https://flet.dev/docs/controls/datepicker/
-# https://flet.dev/docs/controls/timepicker/
-# https://www.tickcounter.com/
-# https://www.youtube.com/watch?v=vxXhJ1Qk8No&t=177s
-# https://github.com/yafethtb/flet-countdown-timer/blob/main/timecounter.py
-# https://docs.python.org/3/library/time.html
-# https://docs.python.org/3/library/datetime.html
-# https://docs.python.org/3/library/threading.html
-
 import flet as ft
 import time
 import datetime
@@ -79,9 +68,8 @@ def main (page: ft.Page):
         event_title_text_value = e.control.value
         event_title_field.value = event_title_text_value 
         page.update(event_title_field) 
-        update_countdown_display()
 
-    
+        update_countdown_display()
 
     def update_countdown_display():
         current_event_title = event_title_text_value if event_title_text_value.strip() else "My Awesome Event"
@@ -147,6 +135,22 @@ def main (page: ft.Page):
         icon=ft.Icons.ACCESS_TIME,
         on_click=lambda _: page.open(time_picker))
     
+    # EMELY
+    def upload_files(e):
+        upload_list = []
+        if file_picker.result != None and file_picker.result.files != None:
+            for f in file_picker.result.files:
+                upload_list.append(
+                    FilePickerUploadFile(
+                        f.name,
+                        upload_url=page.get_upload_url(f.name, 600),
+                    )
+                )
+            file_picker.upload(upload_list)
+
+    file_picker=ft.ElevatedButton("Upload", on_click=upload_files)
+    upload_image=ft.Image(src="/uploads/<some-uploaded-picture.png>")
+
     # ESMERALDA
     birthday_img = ft.Image(src=".", height=400, width=400)
     christmas_img = ft.Image(src=".", height=400, width=400)
@@ -158,7 +162,6 @@ def main (page: ft.Page):
     thanksgiving_img = ft.Image(src=".", height=400, width=400)
     firstdayofschool_img = ft.Image(src=".", height=400, width=400)
     valentinesday_img = ft.Image(src=".", height=400, width=400)
-    none_img = ft.Image(src=".", height=400, width=400)
     
     def process(e):
         if dropdown_btn.value == "Birthday":
@@ -210,12 +213,6 @@ def main (page: ft.Page):
             birthday_img.src = "valentinesday.jpg"
         else:
             valentinesday_img.src = "."
-        
-        if dropdown_btn.value == "None":
-            none_img = "." 
-        else:
-            none_img = "."
-
         page.update()
 
     dropdown_btn = ft.Dropdown(
@@ -230,8 +227,7 @@ def main (page: ft.Page):
             ft.dropdown.Option("Halloween"),
             ft.dropdown.Option("Thanks Giving"),
             ft.dropdown.Option("First Day of School"),
-            ft.dropdown.Option("Valentine's Day"),
-            ft.dropdown.Option("None")], on_change=process)
+            ft.dropdown.Option("Valentine's Day")], on_change=process)
  
     page.add(
         event_title_field, 
@@ -242,10 +238,10 @@ def main (page: ft.Page):
         selected_time_display,
         ft.Divider(), 
         countdown_display_text,
+        file_picker,
         ft.Stack([birthday_img, christmas_img, newyear_img, easter_img, summer_img, 
-        independenceday_img, halloween_img, thanksgiving_img, firstdayofschool_img, 
-        valentinesday_img, none_img]))
+        independenceday_img, halloween_img, thanksgiving_img, firstdayofschool_img, valentinesday_img]))
     
     threading.Thread(target=start_realtime_countdown, daemon=True).start()
 
-ft.app(target=main, assets_dir="assets")
+ft.app(target=main, assets_dir="assets", upload_dir="assets/uploads")

@@ -23,6 +23,7 @@ def main (page: ft.Page):
     selected_date = None
     selected_time = None 
     
+    # EMELY
     def toggle_theme(e):
         if theme_switch.value:
             page.theme_mode = "dark"
@@ -52,6 +53,7 @@ def main (page: ft.Page):
         weight=ft.FontWeight.NORMAL,
         text_align=ft.TextAlign.CENTER)
 
+    # MICHELLE
     def handle_change_d(e):
         nonlocal selected_date
         selected_date = e.control.value
@@ -112,7 +114,7 @@ def main (page: ft.Page):
             time.sleep(1)
 
     #--------------------------------------------------------------------------------------------------------
-
+    # EMELY
     time_picker = ft.TimePicker(
     confirm_text="Confirm",
     error_invalid_text="Time out of range",
@@ -126,6 +128,7 @@ def main (page: ft.Page):
     on_change=handle_change_d,
     on_dismiss=handle_dismissal_d)
 
+    # MICHELLE
     event_title_field = ft.TextField(
         label="Event Title",
         value=event_title_text_value, 

@@ -24,6 +24,22 @@ def main (page: ft.Page):
     selected_time = None 
     
     # EMELY
+    def close_banner(e):
+        page.close(banner)
+        page.add(ft.Text("Action clicked: " + e.control.text))
+    
+    action_button_style = ft.ButtonStyle(color=ft.Colors.BLUE)
+        
+    banner = ft.Banner(
+        bgcolor=ft.Colors.AMBER_100,
+        leading=ft.Icon(ft.Icons.WARNING_AMBER_ROUNDED, color=ft.Colors.AMBER, size=40),
+        content=ft.Text(
+        value="⏰ Time's up! Your event has arrived.",
+        color=ft.Colors.BLACK ),
+        actions=[
+            ft.TextButton(
+                text="OK", style=action_button_style, on_click=close_banner)])
+
     def toggle_theme(e):
         if theme_switch.value:
             page.theme_mode = "dark"
@@ -81,8 +97,7 @@ def main (page: ft.Page):
         page.update(event_title_field) 
         update_countdown_display()
 
-    
-
+    # MICHELLE
     def update_countdown_display():
         current_event_title = event_title_text_value if event_title_text_value.strip() else "My Awesome Event"
 
@@ -92,6 +107,7 @@ def main (page: ft.Page):
 
             if time_difference.total_seconds() <= 0:
                 countdown_display_text.value = f"{current_event_title} has already passed!"
+                page.open(banner) # ESMERALDA
             else:
                 days = time_difference.days
                 remaining_seconds_in_day = time_difference.seconds 
@@ -232,7 +248,8 @@ def main (page: ft.Page):
             ft.dropdown.Option("First Day of School"),
             ft.dropdown.Option("Valentine's Day"),
             ft.dropdown.Option("None")], on_change=process)
- 
+    
+    # ESMERALDA
     page.add(
         event_title_field, 
         ft.Row([dropdown_btn]),
@@ -246,6 +263,7 @@ def main (page: ft.Page):
         independenceday_img, halloween_img, thanksgiving_img, firstdayofschool_img, 
         valentinesday_img, none_img]))
     
+    # MICHELLE
     threading.Thread(target=start_realtime_countdown, daemon=True).start()
 
 ft.app(target=main, assets_dir="assets")

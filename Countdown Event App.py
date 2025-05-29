@@ -28,7 +28,6 @@ def main (page: ft.Page):
     # EMELY
     def close_banner(e):
         page.close(banner)
-        page.add(ft.Text("Action clicked: " + e.control.text))
     
     action_button_style = ft.ButtonStyle(color=ft.Colors.BLUE)
         

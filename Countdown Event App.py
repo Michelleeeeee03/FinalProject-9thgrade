@@ -74,7 +74,7 @@ def main (page: ft.Page):
     def handle_change_d(e):
         nonlocal selected_date
         selected_date = e.control.value
-        selected_date_display.value = f"Selected Date: {selected_date.strftime('%Y-%m-%d')}"
+        selected_date_display.value = f"Selected date: {selected_date.strftime('%Y-%m-%d')}"
         page.update(selected_date_display) 
         update_countdown_display()
         
